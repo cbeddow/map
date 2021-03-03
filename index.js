@@ -11,14 +11,19 @@ var MARKER_LNG = document.getElementById('marker-lng');
 var DOWNLOAD = document.getElementById('download');
 var INPUT_LNGLAT = document.getElementById('lnglatinput');
 var INPUT_ZXY = document.getElementById('zxyinput');
+var INPUT_MVT = document.getElementById('mvtinput');
 
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
-    center: [13.3288, 49.9165],
-    zoom: 3.5,
+    center: [47.61619, -122.34348],
+    zoom: 13,
+    minZoom: 13,
+    maxZoom: 13,
     hash: true
 });
+
+
 
 map.addControl(
   new MapboxGeocoder({
@@ -54,11 +59,33 @@ INPUT_ZXY.addEventListener('keypress', function(e) {
     map.fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]], { linear: true, duration: 0 });
   }
 });
+INPUT_MVT.addEventListener('keypress', function(e) {
+
+});
 
 map.on('load', function(e) {
   ZOOM.innerHTML = getZoom(map);
   LNG.innerHTML = getLng(map.getCenter());
   LAT.innerHTML = getLat(map.getCenter());
+  console.log('add Mapillary!');
+  map.addSource('inputmvt', {
+    type: 'vector',
+    tiles: ['https://tiles3.mapillary.com/v0.1/{z}/{x}/{y}.mvt']
+  });
+  map.addLayer({
+    'id': 'inputmvt',
+    'type': 'line',
+    'source': 'inputmvt',
+    'source-layer': 'mapillary-sequences',
+    'layout': {
+    'line-join': 'round',
+    'line-cap': 'round'
+  },
+  'paint': {
+    'line-color': '#05CB63',
+    'line-width': 2
+  }
+  });
 });
 
 map.on('zoom', function(e, z) {

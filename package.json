@@ -19,6 +19,7 @@
   "homepage": "https://github.com/mapsam/map#readme",
   "dependencies": {
     "@mapbox/sphericalmercator": "^1.1.0",
-    "@mapbox/tilebelt": "^1.0.1"
+    "@mapbox/tilebelt": "^1.0.1",
+    "browserify": "^17.0.0"
   }
 }
